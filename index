@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>אפליקציית הזמנות - ח.סבן חומרי בניין</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #25D366;
+            --primary-dark: #128C7E;
+            --accent: #FFD700;
+            --neon-blue: #00f2ff;
+            --neon-green: #00ff9d;
+            --neon-orange: #ff7b00;
+            --neon-purple: #bd00ff;
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.4);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .phone-container {
+            width: 100vw;
+            max-width: 380px;
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .phone {
+            width: 100%;
+            min-height: calc(100vh - 30px);
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .phone::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 25px;
+            background: #151515;
+            border-radius: 0 0 20px 20px;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
+        }
+
+        .phone::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .screen {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(40, 40, 40, 0.95));
+            border-radius: 20px;
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(8px);
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 10px 0 20px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background-image: url('https://i.postimg.cc/NjhWzHjM/1000101077.jpg');
+            background-size: cover;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 20px var(--accent);
+            margin-bottom: 15px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .app-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .app-name::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .app-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        /* Refined Glass Buttons */
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 16px;
+            background: linear-gradient(145deg, var(--glass-light), var(--glass-dark));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            min-height: 90px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+            transition: var(--transition);
+        }
+
+        .btn:hover .btn-icon {
+            transform: scale(1.2);
+        }
+
+        .btn-text {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .btn-primary { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
+        .btn-primary:hover { box-shadow: 0 0 25px rgba(0, 242, 255, 0.6); }
+        .btn-secondary { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
+        .btn-secondary:hover { box-shadow: 0 0 25px rgba(0, 255, 157, 0.6); }
+        .btn-whatsapp { border-color: var(--primary); box-shadow: 0 0 15px rgba(37, 211, 102, 0.4); }
+        .btn-whatsapp:hover { box-shadow: 0 0 25px rgba(37, 211, 102, 0.6); }
+        .btn-accent { border-color: var(--accent); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+        .btn-accent:hover { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+        .btn-orange { border-color: var(--neon-orange); box-shadow: 0 0 15px rgba(255, 123, 0, 0.4); }
+        .btn-orange:hover { box-shadow: 0 0 25px rgba(255, 123, 0, 0.6); }
+        .btn-purple { border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(189, 0, 255, 0.4); }
+        .btn-purple:hover { box-shadow: 0 0 25px rgba(189, 0, 255, 0.6); }
+
+        /* Smart Message Box */
+        .messages-container {
+            background: linear-gradient(135deg, rgba(35, 35, 35, 0.95), rgba(45, 45, 45, 0.95));
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .messages-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .messages-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .show-messages-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .show-messages-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .messages-list {
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) rgba(255,255,255,0.1);
+        }
+
+        .messages-list.show {
+            display: block;
+        }
+
+        .messages-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .messages-list::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .messages-list::-webkit-scrollbar-thumb {
+            background-color: var(--accent);
+            border-radius: 8px;
+        }
+
+        .message-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .message-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--accent);
+            transform: translateX(-3px);
+        }
+
+        .message-input-container {
+            display: flex;
+            gap: 10px;
+            position: relative;
+        }
+
+        .message-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 20px;
+            padding: 12px 15px;
+            color: white;
+            font-size: 14px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .message-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .message-input::after {
+            content: '|';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            animation: blink 1s step-end infinite;
+            display: none;
+        }
+
+        .message-input:focus::after {
+            display: block;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(40, 40, 40, 0.95);
+            border-radius: 12px;
+            margin-top: 5px;
+            max-height: 100px;
+            overflow-y: auto;
+            display: none;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .suggestions.show {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .send-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .send-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .instructions {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .instructions-title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .instructions p {
+            margin-bottom: 6px;
+            padding-right: 12px;
+            position: relative;
+        }
+
+        .instructions p::before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--accent);
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .popup-container {
+            background: linear-gradient(135deg, rgba(35, 35, 35, 0.95), rgba(45, 45, 45, 0.95));
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            transform: translateY(30px);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .popup-overlay.show .popup-container {
+            transform: translateY(0);
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .popup-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .close-popup {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-popup:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .popup-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) rgba(255,255,255,0.1);
+        }
+
+        .popup-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .popup-content::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .popup-content::-webkit-scrollbar-thumb {
+            background-color: var(--accent);
+            border-radius: 8px;
+        }
+
+        .whatsapp-message {
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .message-text {
+            font-size: 15px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-text.typing::after {
+            content: '|';
+            position: absolute;
+            color: var(--accent);
+            animation: blink 1s step-end infinite;
+        }
+
+        .message-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .section-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .popup-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .popup-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-btn-copy {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .popup-btn-copy:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .popup-btn-send {
+            background: var(--primary);
+            color: white;
+        }
+
+        .popup-btn-send:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .branch-card {
+            background: rgba(45, 45, 45, 0.95);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .branch-map {
+            height: 180px;
+            width: 100%;
+            border: none;
+        }
+
+        .branch-info {
+            padding: 20px;
+        }
+
+        .branch-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .branch-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .branch-detail i {
+            margin-left: 10px;
+            color: var(--accent);
+            min-width: 20px;
+        }
+
+        .branch-button {
+            background: linear-gradient(135deg, #7C4DFF, #512DA8);
+            color: white;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .branch-button:hover {
+            background: linear-gradient(135deg, #512DA8, #7C4DFF);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 400px) {
+            .phone-container {
+                padding: 10px;
+            }
+
+            .phone {
+                border-radius: 24px;
+                padding: 15px;
+            }
+
+            .screen {
+                border-radius: 16px;
+                padding: 12px;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .app-name {
+                font-size: 20px;
+            }
+
+            .buttons-container {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 12px;
+                min-height: 80px;
+            }
+
+            .btn-icon {
+                font-size: 20px;
+            }
+
+            .btn-text {
+                font-size: 13px;
+            }
+
+            .messages-container {
+                padding: 12px;
+            }
+
+            .message-input {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .send-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .popup-container {
+                width: 95%;
+                padding: 20px 15px;
+            }
+
+            .branch-map {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .logo {
+                width: 90px;
+                height: 90px;
+            }
+
+            .app-name {
+                font-size: 18px;
+            }
+
+            .btn {
+                padding: 10px;
+            }
+
+            .btn-icon {
+                font-size: 18px;
+            }
+
+            .btn-text {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="phone">
+            <div class="screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>📶 100% 🔋</span>
+                </div>
+
+                <div class="logo-container">
+                    <div class="logo"></div>
+                    <h1 class="app-name">ח.סבן חומרי בניין</h1>
+                    <div class="app-subtitle">שירות הזמנות מהיר ומקצועי</div>
+                </div>
+
+                <div class="buttons-container">
+                    <a href="https://rami1125.github.io/Saban94/" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-bolt btn-icon"></i>
+                        <div class="btn-text">הזמנה מהירה</div>
+                    </a>
+
+                    <a href="https://sites.google.com/view/sidor-hsaban/%D7%AA%D7%9B%D7%A0%D7%95%D7%9F-%D7%91%D7%A0%D7%99%D7%94" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-pencil-ruler btn-icon"></i>
+                        <div class="btn-text">תכנון בנייה</div>
+                    </a>
+
+                    <a href="https://sites.google.com/view/sidor-hsaban/%D7%A4%D7%99%D7%A0%D7%95%D7%99-%D7%A4%D7%A1%D7%95%D7%9C%D7%AA" class="btn btn-orange" target="_blank">
+                        <i class="fas fa-trash-alt btn-icon"></i>
+                        <div class="btn-text">פינוי פסולת</div>
+                    </a>
+
+                    <a href="https://did.li/BVEZH" class="btn btn-purple" target="_blank">
+                        <i class="fas fa-hard-hat btn-icon"></i>
+                        <div class="btn-text">ייעוץ מקצועי</div>
+                    </a>
+
+                    <button class="btn btn-accent" id="branchesBtn">
+                        <i class="fas fa-map-marker-alt btn-icon"></i>
+                        <div class="btn-text">סניפים</div>
+                    </button>
+
+                    <button class="btn btn-whatsapp" id="contactBtn">
+                        <i class="fab fa-whatsapp btn-icon"></i>
+                        <div class="btn-text">צור קשר</div>
+                    </button>
+                </div>
+
+                <div class="messages-container">
+                    <div class="messages-header">
+                        <div class="messages-title">
+                            <i class="fas fa-comment-dots"></i>
+                            הודעות מהירות
+                        </div>
+                        <button class="show-messages-btn">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="messages-list" id="messagesList">
+                        <div class="message-item" data-message="שלום, מעוניין להזמין חומרים.">הזמנה חדשה</div>
+                        <div class="message-item" data-message="מתי צפוי הנהג להגיע לאתר?">צפי הגעה</div>
+                        <div class="message-item" data-message="מה הסטטוס של הזמנה מס' 12345?">עדכון הזמנה</div>
+                        <div class="message-item" data-message="יש הערה על ההזמנה האחרונה.">הערת הזמנה</div>
+                        <div class="message-item" data-message="צריך לדבר עם נציג על בעיה בהזמנה.">פנייה לנציג</div>
+                        <div class="message-item" data-message="האם תוכלו לשלוח הצעת מחיר?">הצעת מחיר</div>
+                        <div class="message-item" data-message="האם המוצר X זמין במלאי?">בדיקת מלאי</div>
+                        <div class="message-item" data-message="אפשר לשנות כתובת למשלוח?">שינוי כתובת</div>
+                        <div class="message-item" data-message="שאלה לגבי החשבונית האחרונה.">שאלת חשבונית</div>
+                        <div class="message-item" data-message="אשמח לעדכונים על מבצעים חדשים.">עדכוני מבצעים</div>
+                    </div>
+
+                    <div class="message-input-container">
+                        <input type="text" class="message-input" placeholder="כתוב הודעה אישית..." id="customMessage">
+                        <div class="suggestions" id="suggestions"></div>
+                        <button class="send-btn" id="sendMessageBtn">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                    </div>
+
+                    <div class="instructions">
+                        <div class="instructions-title">
+                            <i class="fas fa-info-circle"></i>
+                            הנחיות שימוש
+                        </div>
+                        <p>בחר הודעה או כתוב הודעה אישית</p>
+                        <p>לחץ על כפתור הוואטסאפ לשליחה</p>
+                        <p>תועבר לצ'אט עם מחלקת ההזמנות</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="messagePopup">
+        <div class="popup-container">
+            <div class="popup-header">
+                <div class="popup-title">
+                    <i class="fab fa-whatsapp"></i>
+                    הודעה למחלקת הזמנות
+                </div>
+                <button class="close-popup" id="closePopup">×</button>
+            </div>
+
+            <div class="popup-content">
+                <div class="whatsapp-message">
+                    <div class="message-text" id="popupMessageText"></div>
+                    <div class="message-section" id="customerSection" style="display: none;">
+                        <div class="section-title">
+                            <i class="fas fa-user"></i>
+                            פרטי לקוח:
+                        </div>
+                        <div class="section-content" id="customerDetails"></div>
+                    </div>
+                    <div class="message-section" id="deliverySection" style="display: none;">
+                        <div class="section-title">
+                            <i class="fas fa-truck"></i>
+                            פרטי אספקה:
+                        </div>
+                        <div class="section-content" id="deliveryDetails"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="popup-actions">
+                <button class="popup-btn popup-btn-copy" id="copyMessageBtn">
+                    העתק הודעה
+                    <i class="far fa-copy"></i>
+                </button>
+                <button class="popup-btn popup-btn-send" id="sendWhatsappBtn">
+                    שלח לוואטסאפ
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="branchesPopup">
+        <div class="popup-container">
+            <div class="popup-header">
+                <div class="popup-title">
+                    <i class="fas fa-map-marked-alt"></i>
+                    סניפי החברה
+                </div>
+                <button class="close-popup" id="closeBranchesPopup">×</button>
+            </div>
+
+            <div class="popup-content">
+                <div class="branch-card">
+                    <iframe class="branch-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3364.3245342509334!2d34.89983887573536!3d32.15740511747278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d38257da6385b%3A0x34b1c300a0e4570b!2z15zXqNeZINeo15XXmdeaINeV16HXmdeZICzXldeq15nXlCDXqtei16jXmdeU16jXldec15Qg15XXl9eU!5e0!3m2!1sen!2sil!4v1707823456789" allowfullscreen></iframe>
+                    <div class="branch-info">
+                        <h3 class="branch-name">
+                            <i class="fas fa-store"></i>
+                            סניף הוד השרון - התלמיד 6
+                        </h3>
+                        <div class="branch-detail">
+                            <i class="fas fa-phone"></i>
+                            <span>טלפון: <a href="tel:09-7602010" style="color: white; text-decoration: none;">09-7602010</a></span>
+                        </div>
+                        <div class="branch-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>שעות פעילות: א'-ה': 06:00-18:00, ו': 06:00-14:00</span>
+                        </div>
+                        <div class="branch-detail">
+                            <i class="fas fa-truck"></i>
+                            <span>שירות הובלות: עד 500 טון, מנופים עד 100 מטר</span>
+                        </div>
+                        <button class="branch-button" onclick="window.open('https://www.google.com/maps/dir//32.1574051,34.9024138/@32.157405,34.902414,17z?entry=ttu', '_blank')">
+                            <span>נווט לסניף</span>
+                            <i class="fas fa-directions"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="branch-card">
+                    <iframe class="branch-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3364.3288500412585!2d34.8998426155857!3d32.15720128011981!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d382571234567%3A0xa1b2c3d4e5f67890!2sHaHarash%2010%2C%20Hod%20HaSharon!5e0!3m2!1sen!2sil!4v1707823456789" allowfullscreen></iframe>
+                    <div class="branch-info">
+                        <h3 class="branch-name">
+                            <i class="fas fa-store"></i>
+                            סניף הוד השרון - החרש 10
+                        </h3>
+                        <div class="branch-detail">
+                            <i class="fas fa-phone"></i>
+                            <span>טלפון: <a href="tel:09-7402575" style="color: white; text-decoration: none;">09-7402575</a></span>
+                        </div>
+                        <div class="branch-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>שעות פעילות: א'-ה': 06:30-16:00, ו': 06:30-13:30</span>
+                        </div>
+                        <div class="branch-detail">
+                            <i class="fas fa-warehouse"></i>
+                            <span>איסוף עצמי: חומרים לכל סוגי הבנייה</span>
+                        </div>
+                        <button class="branch-button" onclick="window.open('https://www.google.com/maps/dir//32.1572013,34.9020174/@32.157201,34.902017,17z?entry=ttu', '_blank')">
+                            <span>נווט לסניף</span>
+                            <i class="fas fa-directions"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Message suggestions data
+        const suggestionsData = [
+            'שלום, מעוניין להזמין חומרים.',
+            'מתי צפוי הנהג להגיע לאתר?',
+            'מה הסטטוס של הזמנה מס',
+            'יש הערה על ההזמנה האחרונה.',
+            'צריך לדבר עם נציג על בעיה',
+            'האם תוכלו לשלוח הצעת מחיר?',
+            'האם המוצר X זמין במלאי?',
+            'אפשר לשנות כתובת למשלוח?',
+            'שאלה לגבי החשבונית האחרונה.',
+            'אשמח לעדכונים על מבצעים'
+        ];
+
+        // Show/hide messages list
+        const showMessagesBtn = document.querySelector('.show-messages-btn');
+        const messagesList = document.getElementById('messagesList');
+
+        showMessagesBtn.addEventListener('click', function() {
+            messagesList.classList.toggle('show');
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        });
+
+        // Typing effect for messages
+        function typeMessage(element, text, speed = 50) {
+            element.classList.add('typing');
+            element.textContent = '';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    element.classList.remove('typing');
+                }
+            }
+            type();
+        }
+
+        // Open message popup
+        const messageItems = document.querySelectorAll('.message-item');
+        const messagePopup = document.getElementById('messagePopup');
+        const popupMessageText = document.getElementById('popupMessageText');
+        const closePopup = document.getElementById('closePopup');
+
+        messageItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const message = this.getAttribute('data-message');
+                typeMessage(popupMessageText, message);
+                messagePopup.classList.add('show');
+                analyzeMessage(message);
+            });
+        });
+
+        closePopup.addEventListener('click', function() {
+            messagePopup.classList.remove('show');
+            popupMessageText.classList.remove('typing');
+        });
+
+        // Send custom message
+        const customMessageInput = document.getElementById('customMessage');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const suggestionsContainer = document.getElementById('suggestions');
+
+        sendMessageBtn.addEventListener('click', function() {
+            if (customMessageInput.value.trim() !== '') {
+                const message = customMessageInput.value;
+                typeMessage(popupMessageText, message);
+                messagePopup.classList.add('show');
+                analyzeMessage(message);
+                customMessageInput.value = '';
+                suggestionsContainer.classList.remove('show');
+            }
+        });
+
+        customMessageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessageBtn.click();
+            }
+        });
+
+        // Predictive text suggestions
+        customMessageInput.addEventListener('input', function() {
+            const input = this.value.toLowerCase();
+            suggestionsContainer.innerHTML = '';
+            if (input) {
+                const filteredSuggestions = suggestionsData.filter(s => s.toLowerCase().startsWith(input));
+                filteredSuggestions.forEach(suggestion => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.textContent = suggestion;
+                    div.addEventListener('click', () => {
+                        customMessageInput.value = suggestion;
+                        suggestionsContainer.classList.remove('show');
+                    });
+                    suggestionsContainer.appendChild(div);
+                });
+                suggestionsContainer.classList.toggle('show', filteredSuggestions.length > 0);
+            } else {
+                suggestionsContainer.classList.remove('show');
+            }
+        });
+
+        // Copy message
+        const copyMessageBtn = document.getElementById('copyMessageBtn');
+
+        copyMessageBtn.addEventListener('click', function() {
+            const message = popupMessageText.textContent;
+            navigator.clipboard.writeText(message).then(() => {
+                this.innerHTML = 'הועתק! <i class="far fa-check"></i>';
+                setTimeout(() => {
+                    this.innerHTML = 'העתק הודעה <i class="far fa-copy"></i>';
+                }, 2000);
+            });
+        });
+
+        // Send to WhatsApp
+        const sendWhatsappBtn = document.getElementById('sendWhatsappBtn');
+
+        sendWhatsappBtn.addEventListener('click', function() {
+            const phone = '97297602010'; // Corrected phone number format
+            const message = encodeURIComponent(popupMessageText.textContent);
+            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        // Analyze message
+        function analyzeMessage(message) {
+            const customerSection = document.getElementById('customerSection');
+            const deliverySection = document.getElementById('deliverySection');
+            const customerDetails = document.getElementById('customerDetails');
+            const deliveryDetails = document.getElementById('deliveryDetails');
+
+            customerSection.style.display = 'none';
+            deliverySection.style.display = 'none';
+
+            const nameMatch = message.match(/(אני|שמי|זה) (.*?)(\s|,|\.|$)/);
+            if (nameMatch && nameMatch[2]) {
+                customerDetails.innerHTML = `שם: ${nameMatch[2].trim()}`;
+                customerSection.style.display = 'block';
+            }
+
+            const addressMatch = message.match(/(כתובת|לכתובת|למשלוח) (.*?)(\s|,|\.|$)/);
+            if (addressMatch && addressMatch[2]) {
+                deliveryDetails.innerHTML = `כתובת: ${addressMatch[2].trim()}`;
+                deliverySection.style.display = 'block';
+            }
+
+            const orderMatch = message.match(/(מספר הזמנה|הזמנה) (\d+)/);
+            if (orderMatch && orderMatch[2]) {
+                if (customerSection.style.display === 'none') {
+                    customerDetails.innerHTML = '';
+                    customerSection.style.display = 'block';
+                }
+                customerDetails.innerHTML += `<br>מספר הזמנה: ${orderMatch[2]}`;
+            }
+        }
+
+        // Open branches popup
+        const branchesBtn = document.getElementById('branchesBtn');
+        const branchesPopup = document.getElementById('branchesPopup');
+        const closeBranchesPopup = document.getElementById('closeBranchesPopup');
+
+        branchesBtn.addEventListener('click', function() {
+            branchesPopup.classList.add('show');
+        });
+
+        closeBranchesPopup.addEventListener('click', function() {
+            branchesPopup.classList.remove('show');
+        });
+
+        // Open contact popup
+        const contactBtn = document.getElementById('contactBtn');
+
+        contactBtn.addEventListener('click', function() {
+            const message = "שלום, מעוניין בייעוץ מקצועי לגבי המוצרים והשירותים.";
+            typeMessage(popupMessageText, message);
+            messagePopup.classList.add('show');
+            analyzeMessage(message);
+        });
+
+        // Button animations
+        const buttons = document.querySelectorAll('.btn, .popup-btn, .branch-button');
+
+        buttons.forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+
+            button.addEventListener('mouseup', function() {
+                this.style.transform = 'scale(1)';
+            });
+
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
